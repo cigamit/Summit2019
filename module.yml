@@ -61,3 +61,7 @@
       with_dict: "{{ ansible_facts }}"
       when: item.key in validfacts
       delegate_to: localhost
+
+    - include_tasks: checks/is_web.yml
+    - include_tasks: checks/is_db.yml
+
