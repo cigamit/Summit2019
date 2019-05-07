@@ -1,0 +1,46 @@
+    - name: Postgresql | Check
+      shell: rpm -qa | grep -i postgresql
+      args:
+        warn: False
+      failed_when: check.rc > 1
+      changed_when: false
+      register: check
+
+    - name: Postgresql | Set Fact
+      set_fact:
+        is_db: Yes
+        db_type: PostgreSQL
+        cacheable: True
+      when: check.rc == 0
+
+    - name: MySQL | Check
+      shell: rpm -qa | grep -i mysql-server
+      args:
+        warn: False
+      failed_when: check.rc > 1
+      changed_when: false
+      register: check
+
+    - name: MySQL | Set Fact
+      set_fact:
+        is_db: Yes
+        db_type: MySQL
+        cacheable: True
+      when: check.rc == 0
+
+
+    - name: MariaDB | Check
+      shell: rpm -qa | grep -i mariadb-server
+      args:
+        warn: False
+      failed_when: check.rc > 1
+      changed_when: false
+      register: check
+
+    - name: MariaDB | Set Fact
+      set_fact:
+        is_db: Yes
+        db_type: MariaDB
+        cacheable: True
+      when: check.rc == 0
+

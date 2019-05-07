@@ -1,0 +1,33 @@
+    - name: NGINX | Check
+      shell: rpm -qa | grep nginx
+      args:
+        warn: False
+      failed_when: check.rc > 1
+      changed_when: false
+      register: check
+
+    - name: NGINX | Set Fact
+      fdb_fact:
+        state: set
+        hostname: "{{ inventory_hostname }}"
+        fact: is_web
+        data: Yes
+      delegate_to: localhost
+      when: check.rc == 0
+
+    - name: Apache | Check
+      shell: rpm -qa | grep httpd
+      args:
+        warn: False
+      failed_when: check.rc > 1
+      changed_when: false
+      register: check
+
+    - name: Apache | Set Fact
+      fdb_fact:
+        state: set
+        hostname: "{{ inventory_hostname }}"
+        fact: is_web
+        data: Yes
+      delegate_to: localhost
+      when: check.rc == 0

@@ -1,0 +1,63 @@
+---
+- hosts: all
+  gather_facts: yes
+  vars:
+    validfacts:
+      - all_ipv4_addresses
+      - architecture
+      - bios_version
+      - default_ipv4
+      - distribution
+      - distribution_major_version
+      - distribution_release
+      - distribution_version
+      - dns
+      - domain
+      - fqdn
+      - hostname
+      - kernel
+      - machine_id
+      - memfree_mb
+      - memtotal_mb
+      - os_family
+      - processor_cores
+      - processor_count
+      - processor_threads_per_core
+      - processor_vcpus
+      - product_name
+      - product_serial
+      - product_uuid
+      - product_version
+      - python_version
+      - swapfree_mb
+      - swaptotal_mb
+      - system
+      - system_vendor
+      - virtualization_role
+      - virtualization_type
+  tasks:
+
+    - name: Set Fact
+      fdb_fact:
+        state: set
+        hostname: "{{ inventory_hostname }}"
+        fact: test1
+        data: Testing12345
+      delegate_to: localhost
+
+    - name: Get Fact
+      fdb_fact:
+        state: get
+        hostname: ansiblefdb
+        fact: test1
+      register: myfacttest2
+
+    - name: Set Facts
+      fdb_fact:
+        state: set
+        hostname: localhost
+        fact: "{{ item.key }}"
+        data: "{{ item.value }}"
+      with_dict: "{{ ansible_facts }}"
+      when: item.key in validfacts
+      delegate_to: localhost

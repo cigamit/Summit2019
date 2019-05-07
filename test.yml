@@ -1,0 +1,16 @@
+---
+- hosts: localhost
+  gather_facts: yes
+
+  tasks:
+    - debug:
+        var: is_db
+
+    - set_fact:
+        MyFact: Test
+        cacheable: True
+
+    - set_stats:
+        data:
+          MyStat: Test
+

@@ -1,0 +1,29 @@
+    - name: NGINX | Check
+      shell: rpm -qa | grep nginx
+      args:
+        warn: False
+      failed_when: check.rc > 1
+      changed_when: false
+      register: check
+
+    - name: NGINX | Set Fact
+      set_fact:
+        is_web: Yes
+        web_type: Nginx
+        cacheable: True
+      when: check.rc == 0
+
+    - name: Apache | Check
+      shell: rpm -qa | grep httpd
+      args:
+        warn: False
+      failed_when: check.rc > 1
+      changed_when: false
+      register: check
+
+    - name: Apache | Set Fact
+      set_fact:
+        is_web: Yes
+        web_type: Apache
+        cacheable: True
+      when: check.rc == 0

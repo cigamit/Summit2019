@@ -1,0 +1,14 @@
+---
+- hosts: localhost,all
+  gather_facts: yes
+  tasks:
+    - set_fact:
+        MyFact: Test
+        cacheable: True
+
+    - set_stats:
+        data:
+          MyStat: Test
+
+    - include_tasks: checks/is_web_fact.yml
+    - include_tasks: checks/is_db_fact.yml
